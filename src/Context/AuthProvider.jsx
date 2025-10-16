@@ -7,18 +7,22 @@ import { auth } from '../Firebase/_firebase.init';
 
     const googleProvider = new GoogleAuthProvider();
 
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true)
 
 
     const createUser = (email, password)=>{
-       return createUserWithEmailAndPassword(auth, email, password )
+        setLoading(true)
+       return createUserWithEmailAndPassword(auth, email, password );
     }
 
     const signIn = (email, password)=>{
+         setLoading(true)
           return signInWithEmailAndPassword(auth, email, password)
     }
 
     const googlePopup = ()=>{
+        setLoading(true)
         return  signInWithPopup(auth, googleProvider)
     }
 
@@ -28,8 +32,9 @@ import { auth } from '../Firebase/_firebase.init';
 
     useEffect(()=>{
         const unsubscriber = onAuthStateChanged(auth, (CuurentUser)=>{
-            console.log("Current user", CuurentUser)
+            // console.log("Current user", CuurentUser)
              setUser(CuurentUser);
+             setLoading(false)
         });
         return ()=> unsubscriber()
     },[])
@@ -37,10 +42,11 @@ import { auth } from '../Firebase/_firebase.init';
 
     const appInfo = {
         user,
+        loading,
         signOutUser,
         createUser,
         signIn,
-        googlePopup
+        googlePopup,
 
     }
 
