@@ -1,13 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router';
-
+import React, { use } from 'react';
+import { Link, NavLink } from 'react-router';
+import "./Navber.css"
+import { AuthContext } from '../Context/AuthContext';
 const Navber = () => {
 
+  const {user , signOutUser} = use(AuthContext);
+
+  const handleSignOut = ()=>{
+    signOutUser()
+  }
 
   const links = <>
-     <li><Link to={'/'}>Home</Link></li>
-     <li><Link to={'/register'}>Register</Link></li>
-     <li><Link to={'/login'}>Login</Link></li>
+     <li><NavLink to={'/'}>Home</NavLink></li>
+     <li><NavLink to={'/register'}>Register</NavLink></li>
+     <li><NavLink to={'/login'}>Login</NavLink></li>
   </>
 
     return (
@@ -31,7 +37,9 @@ const Navber = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
+    {
+      user ? <a onClick={handleSignOut} className="btn">Sign Out</a> : <a className="btn">Login</a>
+    }
   </div>
 </div>
     );
